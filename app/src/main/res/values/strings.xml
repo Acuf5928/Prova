@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MarvelCharacters</string>
+    <string name="search">Cerca...</string>
+    <string name="back">Indietro</string>
+    <string name="delete_all">Cancella tutto</string>
+    <string name="share_title">Condividi il tuo eroe</string>
+    <string name="aggiungi_nuovi_preferiti_dal_dettaglio">Aggiungi nuovi preferiti dal dettaglio</string>
+    <string name="attenti_mentre_carichiamo_i_dati_la_prima_volta_potrebbe_volrci_un_p">Attenti mentre carichiamo i dati, la prima volta potrebbe volerci un pò</string>
+</resources>

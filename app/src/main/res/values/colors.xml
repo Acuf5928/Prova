@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="grey">#80FFFFFF</color>
+
+    <color name="red">#ed1d24</color>
+    <color name="yellow">#ffff00</color>
+
+    <color name="home_list_bkg_start_color">#4D090B</color>
+    <color name="home_list_bkg_end_color">#0E0202</color>
+
+    <color name="search_background">#33E6CFCF</color>
+</resources>
