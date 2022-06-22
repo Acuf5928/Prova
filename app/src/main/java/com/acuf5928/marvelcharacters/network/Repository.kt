@@ -120,8 +120,8 @@ class Repository(
 
     private fun mapModel(mCache: GetCharactersModel) =
         ListMainElementModel(
-            totalElement = 0,
-            downloadedElement = 0,
+            totalElement = mCache.data?.total ?: 0,
+            downloadedElement = (mCache.data?.offset ?: 0) + (mCache.data?.count ?: 0),
             mainElementModel =
             mCache.data?.results?.map {
                 ListMainElementModel.MainElementModel(
