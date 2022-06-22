@@ -1,7 +1,7 @@
 package com.acuf5928.marvelcharacters.network
 
 import android.util.Log
-import com.acuf5928.marvelcharacters.model.local.ErrorModel
+import com.acuf5928.marvelcharacters.model.remote.ErrorModel
 import com.acuf5928.marvelcharacters.model.local.Model
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -14,7 +14,6 @@ object GeneraRequest {
         Log.d(TAG, "#>>> Response code : ${response.code()}")
         return try {
             when {
-                /** HTTPCODE 200 .. 299 */
                 response.isSuccessful -> response.body() as Model
                 else -> {
                     val bodyType = object : TypeToken<ErrorModel>() {}.type
@@ -22,7 +21,7 @@ object GeneraRequest {
                 }
             }
         } catch (e: Exception) {
-            ErrorModel(418, "Errore mentre comunicavo con il server")
+            ErrorModel("418", "Errore mentre comunicavo con il server")
         }
     }
 }

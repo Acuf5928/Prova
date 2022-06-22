@@ -4,17 +4,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.acuf5928.marvelcharacters.databinding.ItemHomeElementBinding
-import com.acuf5928.marvelcharacters.model.local.MainElementModel
+import com.acuf5928.marvelcharacters.model.local.ListMainElementModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 
 class ElementHomeAdapter(
-    private var list: List<MainElementModel>,
-    private val onClick: ((MainElementModel) -> Unit)? = null
+    private var list: List<ListMainElementModel.MainElementModel>,
+    private val onClick: ((ListMainElementModel.MainElementModel) -> Unit)? = null
 ) : RecyclerView.Adapter<ElementHomeAdapter.VH>() {
     private var key = ""
 
-    private var filteredList = list.filter { key.isBlank() || it.title.contains(key, ignoreCase = true) || it.description.contains(key, ignoreCase = true)}
+    private var filteredList = list.filter { key.isBlank() || it.title.contains(key, ignoreCase = true) || it.description.contains(key, ignoreCase = true)}.sortedBy { it.title }
 
     class VH(val binding: ItemHomeElementBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -45,15 +45,15 @@ class ElementHomeAdapter(
 
     override fun getItemCount() = filteredList.size
 
-    fun updateList(list: List<MainElementModel>) {
+    fun updateList(list: List<ListMainElementModel.MainElementModel>) {
         this.list = list
-        filteredList = list.filter { key.isBlank() || it.title.contains(key, ignoreCase = true) || it.description.contains(key, ignoreCase = true)}
+        filteredList = list.filter { key.isBlank() || it.title.contains(key, ignoreCase = true) || it.description.contains(key, ignoreCase = true)}.sortedBy { it.title }
         notifyDataSetChanged()
     }
 
     fun setFilter(key: String) {
         this.key = key
-        filteredList = list.filter { key.isBlank() || it.title.contains(key, ignoreCase = true) || it.description.contains(key, ignoreCase = true)}
+        filteredList = list.filter { key.isBlank() || it.title.contains(key, ignoreCase = true) || it.description.contains(key, ignoreCase = true)}.sortedBy { it.title }
         notifyDataSetChanged()
     }
 }

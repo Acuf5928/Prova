@@ -8,10 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.acuf5928.marvelcharacters.R
 import com.acuf5928.marvelcharacters.databinding.FragmentHomeBinding
+import com.acuf5928.marvelcharacters.model.local.ListMainElementModel
+import com.acuf5928.marvelcharacters.model.remote.ErrorModel
 import com.acuf5928.marvelcharacters.ui.recycler.ElementHomeAdapter
 import com.acuf5928.marvelcharacters.viewmodel.ViewModelHome
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -40,8 +43,7 @@ class FragmentHome : Fragment() {
         setupRecycler()
         setupObserver()
         setupOnChangeListener()
-
-        viewModel.getCharacters()
+        setupRefresh()
     }
 
     override fun onDestroyView() {
@@ -59,30 +61,20 @@ class FragmentHome : Fragment() {
     }
 
     private fun setupObserver() {
-        viewModel.isError.observe(viewLifecycleOwner) {
-            if (it != null) {
+        viewModel.repository.getCharacters()?.observe(requireActivity()) {
+            if (it is ErrorModel) {
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle("Errore di connessione")
                     .setMessage(it.message)
                     .setPositiveButton("OK") { _, _ ->
                     }
                     .show()
+            } else if (it is ListMainElementModel) {
+                baseContainerBinding?.noElement?.isVisible = it.downloadedElement != it.totalElement
+                baseContainerBinding?.recycler?.visibility = View.VISIBLE
+                baseContainerBinding?.searchLayout?.visibility = View.VISIBLE
 
-                viewModel.isError.value = null
-            }
-        }
-
-        viewModel.result.observe(viewLifecycleOwner) {
-            if(it.isNullOrEmpty()) {
-                binding.recycler.visibility = View.GONE
-                binding.searchLayout.visibility = View.GONE
-                binding.noElement.visibility = View.VISIBLE
-            } else {
-                binding.recycler.visibility = View.VISIBLE
-                binding.searchLayout.visibility = View.VISIBLE
-                binding.noElement.visibility = View.GONE
-
-                (binding.recycler.adapter as? ElementHomeAdapter)?.updateList(it.orEmpty())
+                (baseContainerBinding?.recycler?.adapter as? ElementHomeAdapter)?.updateList(it.mainElementModel)
             }
         }
     }
@@ -101,5 +93,28 @@ class FragmentHome : Fragment() {
                 (binding.recycler.adapter as? ElementHomeAdapter)?.setFilter(s?.toString().orEmpty())
             }
         })
+    }
+
+    private fun setupRefresh() {
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.repository.getCharacters(true)?.observe(requireActivity()) {
+                if (it is ErrorModel) {
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("Errore di connessione")
+                        .setMessage(it.message)
+                        .setPositiveButton("OK") { _, _ ->
+                        }
+                        .show()
+                    binding.swipeRefresh.isRefreshing = false
+                } else if (it is ListMainElementModel) {
+                    baseContainerBinding?.noElement?.isVisible = it.downloadedElement != it.totalElement
+                    baseContainerBinding?.recycler?.visibility = View.VISIBLE
+                    baseContainerBinding?.searchLayout?.visibility = View.VISIBLE
+
+                    (baseContainerBinding?.recycler?.adapter as? ElementHomeAdapter)?.updateList(it.mainElementModel)
+                    binding.swipeRefresh.isRefreshing = false
+                }
+            }
+        }
     }
 }

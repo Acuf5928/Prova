@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             app:cardBackgroundColor="@color/search_background"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="30dp"
             app:cardPreventCornerOverlap="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

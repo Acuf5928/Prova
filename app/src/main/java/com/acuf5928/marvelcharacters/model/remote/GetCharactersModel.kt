@@ -11,7 +11,7 @@ data class GetCharactersModel(
     @SerializedName("attributionText")
     val attributionText: String?,
     @SerializedName("code")
-    val code: Int?,
+    val code: String?,
     @SerializedName("copyright")
     val copyright: String?,
     @SerializedName("data")

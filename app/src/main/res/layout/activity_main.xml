@@ -95,5 +95,14 @@
             app:layout_constraintStart_toEndOf="@+id/home_btn"
             app:layout_constraintTop_toTopOf="@+id/bkg" />
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/indicator"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            app:cardCornerRadius="4dp"
+            app:cardBackgroundColor="@color/white"
+            app:layout_constraintStart_toStartOf="@+id/home_btn"
+            app:layout_constraintEnd_toEndOf="@+id/home_btn"
+            app:layout_constraintBottom_toBottomOf="@+id/home_btn"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

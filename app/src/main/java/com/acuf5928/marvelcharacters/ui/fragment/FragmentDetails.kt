@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.acuf5928.marvelcharacters.R
 import com.acuf5928.marvelcharacters.databinding.FragmentDetailsBinding
-import com.acuf5928.marvelcharacters.model.local.MainElementModel
+import com.acuf5928.marvelcharacters.model.local.ListMainElementModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.gson.Gson
@@ -42,7 +42,7 @@ class FragmentDetails : Fragment() {
 
     private fun setupView() {
         arguments?.let { arg ->
-            (arg.getSerializable("ELEMENT") as? MainElementModel)?.let { model ->
+            (arg.getSerializable("ELEMENT") as? ListMainElementModel.MainElementModel)?.let { model ->
                 context?.let {
                     Glide
                         .with(it)
@@ -55,8 +55,8 @@ class FragmentDetails : Fragment() {
                 binding.content.text = model.description
 
                 val list = sharedPref.getString("STAR", "[]")
-                val listToken = object : TypeToken<MutableList<MainElementModel>>() {}.type
-                val newList: MutableList<MainElementModel> = gson.fromJson(list, listToken)
+                val listToken = object : TypeToken<MutableList<ListMainElementModel.MainElementModel>>() {}.type
+                val newList: MutableList<ListMainElementModel.MainElementModel> = gson.fromJson(list, listToken)
 
                 if (newList.contains(model)) {
                     binding.star.setImageResource(R.drawable.ic_star_full)
@@ -73,7 +73,7 @@ class FragmentDetails : Fragment() {
         }
         binding.share.setOnClickListener {
             arguments?.let { arg ->
-                (arg.getSerializable("ELEMENT") as? MainElementModel)?.let { model ->
+                (arg.getSerializable("ELEMENT") as? ListMainElementModel.MainElementModel)?.let { model ->
                     val shareIntent = Intent()
                     shareIntent.action = Intent.ACTION_SEND
                     shareIntent.type = "text/plain"
@@ -84,10 +84,10 @@ class FragmentDetails : Fragment() {
         }
         binding.star.setOnClickListener {
             arguments?.let { arg ->
-                (arg.getSerializable("ELEMENT") as? MainElementModel)?.let { model ->
+                (arg.getSerializable("ELEMENT") as? ListMainElementModel.MainElementModel)?.let { model ->
                     val list = sharedPref.getString("STAR", "[]")
-                    val listToken = object : TypeToken<MutableList<MainElementModel>>() {}.type
-                    val newList: MutableList<MainElementModel> = gson.fromJson(list, listToken)
+                    val listToken = object : TypeToken<MutableList<ListMainElementModel.MainElementModel>>() {}.type
+                    val newList: MutableList<ListMainElementModel.MainElementModel> = gson.fromJson(list, listToken)
 
                     if (newList.contains(model)) {
                         newList.remove(model)

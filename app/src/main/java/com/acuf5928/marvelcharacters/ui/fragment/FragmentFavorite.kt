@@ -2,6 +2,8 @@ package com.acuf5928.marvelcharacters.ui.fragment
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -13,7 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.acuf5928.marvelcharacters.R
 import com.acuf5928.marvelcharacters.databinding.FragmentFavoriteBinding
-import com.acuf5928.marvelcharacters.model.local.MainElementModel
+import com.acuf5928.marvelcharacters.model.local.ListMainElementModel
 import com.acuf5928.marvelcharacters.ui.recycler.ElementHomeAdapter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -41,6 +43,7 @@ class FragmentFavorite : Fragment() {
         })
 
         setupRecycler()
+        setupOnChangeListener()
     }
 
     override fun onDestroyView() {
@@ -50,8 +53,8 @@ class FragmentFavorite : Fragment() {
 
     private fun setupRecycler() {
         val list = sharedPref.getString("STAR", "[]")
-        val listToken = object : TypeToken<MutableList<MainElementModel>>() {}.type
-        val newList: MutableList<MainElementModel> = gson.fromJson(list, listToken)
+        val listToken = object : TypeToken<MutableList<ListMainElementModel.MainElementModel>>() {}.type
+        val newList: MutableList<ListMainElementModel.MainElementModel> = gson.fromJson(list, listToken)
 
         if (newList.isEmpty()) {
             binding.recycler.visibility = GONE
@@ -69,5 +72,21 @@ class FragmentFavorite : Fragment() {
                 )
             }
         }
+    }
+
+    private fun setupOnChangeListener() {
+        binding.searchText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //do nothings
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                //do nothings
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                (binding.recycler.adapter as? ElementHomeAdapter)?.setFilter(s?.toString().orEmpty())
+            }
+        })
     }
 }

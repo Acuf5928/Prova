@@ -36,11 +36,11 @@ val networkInterceptor = module {
 
 val services = module {
     single { get<ApiClient>().createService(ApiService::class.java) }
-    single { Repository(get()) }
+    single { Repository(get(), get(), get()) }
 }
 
 val singleViewModels = module {
-    single { ViewModelHome(get(), get(), get()) }
+    single { ViewModelHome(get()) }
 }
 
 val viewModels = module {
