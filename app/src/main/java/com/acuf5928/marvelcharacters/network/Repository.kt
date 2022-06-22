@@ -58,13 +58,13 @@ class Repository(
                                 }
                                 getCharactersModel = model
 
-                                mCache?.let { _resultGetCharacters = mapModel(it) }
+                                _resultGetCharacters = mapModel(model)
 
                                 if (!loadingGetCharacters) {
                                     break
                                 }
 
-                                if (mCache == null) {
+                                if (mCache == null || mCache.data?.results.isNullOrEmpty()) {
                                     emit(_resultGetCharacters)
                                 }
 
